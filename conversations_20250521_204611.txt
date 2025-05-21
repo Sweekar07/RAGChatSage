@@ -1,0 +1,24 @@
+Conversation 1:
+User: who is sweekar?
+Chatbot: I don't have enough information to answer this question.
+
+Conversation 2:
+User: what is rag?
+Chatbot: Retrieval-Augmented Generation (RAG) is a technique that combines retrieval-based methods with generative AI. It retrieves relevant information from a knowledge base and then uses it to generate more accurate and contextual responses.
+
+Conversation 3:
+User: what is the category of streamlit
+Chatbot: Web Development
+
+Conversation 4:
+User: who is PM of India
+Chatbot: I don't have enough information to answer this question.
+
+Conversation 5:
+User: who invented Faiss
+Chatbot: I don't have enough information to answer this question.
+
+Conversation 6:
+User: is langchain open source framework?
+Chatbot: Yes, LangChain is an open-source framework.
+

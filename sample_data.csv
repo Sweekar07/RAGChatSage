@@ -1,0 +1,6 @@
+title,category,content
+Introduction to RAG,AI,"Retrieval-Augmented Generation (RAG) is a technique that combines retrieval-based methods with generative AI. It retrieves relevant information from a knowledge base and then uses it to generate more accurate and contextual responses."
+LangChain Overview,Tools,"LangChain is an open-source framework for building applications with large language models (LLMs). It provides tools and components for creating chains that combine LLMs with other resources like vector stores, document loaders, and agents."
+Google Gemini,Models,"Google Gemini is a family of multimodal AI models developed by Google. It can understand and reason across different types of information like text, images, audio, video, and code. Gemini models come in different sizes: Ultra, Pro, and Nano."
+FAISS Vector Database,Tools,"Facebook AI Similarity Search (FAISS) is a library for efficient similarity search and clustering of dense vectors. It's often used in RAG pipelines to store and retrieve document embeddings quickly and efficiently."
+Streamlit Basics,Web Development,"Streamlit is a Python library that makes it easy to create web apps for data science and machine learning. It turns data scripts into shareable web apps in minutes, all in pure Python with minimal front-end experience required."
