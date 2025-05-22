@@ -30,29 +30,22 @@ if 'session_id' not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
 if 'temp_file_path' not in st.session_state:
     st.session_state.temp_file_path = None
+if 'show_restart' not in st.session_state:
+    st.session_state.show_restart = False
 
-def save_conversations():
-    """Save the current conversations to a file"""
+def create_download_content():
+    """Create downloadable content from conversations"""
     if not st.session_state.conversations:
-        st.warning("No conversations to save.")
-        return
+        return ""
     
-    try:
-        # Create a unique filename with timestamp
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"conversations_{timestamp}.txt"
-        
-        # Use the chatbot to save conversations
-        if st.session_state.chatbot:
-            st.session_state.chatbot.save_conversation(
-                st.session_state.conversations, 
-                filename
-            )
-            st.success(f"Conversations saved successfully to {filename}")
-        else:
-            st.error("Chatbot not initialized. Cannot save conversations.")
-    except Exception as e:
-        st.error(f"Error saving conversations: {str(e)}")
+    content = []
+    for i, conv in enumerate(st.session_state.conversations, 1):
+        content.append(f"Conversation {i}:")
+        content.append(f"User: {conv['question']}")
+        content.append(f"Chatbot: {conv['answer']}")
+        content.append("")  # Empty line between conversations
+    
+    return "\n".join(content)
 
 def process_user_input(user_question):
     """Process user input and generate a response"""
@@ -153,27 +146,52 @@ def main():
         st.subheader("Session Information")
         st.info(f"Session ID: {st.session_state.session_id[:8]}...")
         
-        # End session button
-        if st.button("End Session & Save Conversations"):
-            save_conversations()
+        # Session actions
+        if st.session_state.conversations:
+            st.subheader("Session Actions")
             
-            # Clean up temporary files
-            if st.session_state.temp_file_path and os.path.exists(st.session_state.temp_file_path):
-                try:
-                    os.remove(st.session_state.temp_file_path)
-                    logger.info(f"Removed temporary file: {st.session_state.temp_file_path}")
-                except Exception as e:
-                    logger.error(f"Error removing temporary file: {str(e)}")
+            # Download conversations
+            download_content = create_download_content()
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"conversations_{timestamp}.txt"
             
-            # Reset session
-            st.session_state.chatbot = None
-            st.session_state.conversations = []
-            st.session_state.messages = []
-            st.session_state.temp_file_path = None
-            st.session_state.session_id = str(uuid.uuid4())
+            st.download_button(
+                label="📥 Download Conversations",
+                data=download_content,
+                file_name=filename,
+                mime="text/plain",
+                help="Download your conversation history as a text file"
+            )
             
-            st.success("Session ended and reset successfully!")
-            st.rerun()
+            # End session button
+            if st.button("🔚 End Session", use_container_width=True):
+                # Show goodbye message
+                st.success("👋 Thank you for using the RAG Chatbot! Your session has ended.")
+                
+                # Clean up temporary files
+                if st.session_state.temp_file_path and os.path.exists(st.session_state.temp_file_path):
+                    try:
+                        os.remove(st.session_state.temp_file_path)
+                        logger.info(f"Removed temporary file: {st.session_state.temp_file_path}")
+                    except Exception as e:
+                        logger.error(f"Error removing temporary file: {str(e)}")
+                
+                # Reset session
+                st.session_state.chatbot = None
+                st.session_state.conversations = []
+                st.session_state.messages = []
+                st.session_state.temp_file_path = None
+                st.session_state.session_id = str(uuid.uuid4())
+                st.session_state.show_restart = True
+                
+                st.rerun()
+        
+        # Show restart option after session ends
+        if st.session_state.get('show_restart', False):
+            st.success("🎉 Session ended successfully!")
+            if st.button("🔄 Start New Chat", use_container_width=True):
+                st.session_state.show_restart = False
+                st.rerun()
     
     # Main content area - Chat interface
     chat_container = st.container()
