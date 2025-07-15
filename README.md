@@ -76,10 +76,6 @@ You can deploy this application on Streamlit Cloud or any other platform that su
 3. Configure your secrets in the Streamlit Cloud dashboard.
 4. Deploy the application.
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - This project uses [LangChain](https://github.com/langchain-ai/langchain) for RAG implementation.
